@@ -3,38 +3,358 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Proyectos</title>
+  <title>Cristian Núñez | Ingeniero de Sistemas</title>
+  <meta name="description" content="Portafolio de proyectos de Ingeniería en Sistemas - ITESO">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    header { text-align: center; margin-bottom: 2rem; }
-    h1 { font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    p.subtitle { color: #94a3b8; }
-    .card { background: #1e293b; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); max-width: 600px; width: 90%; border: 1px solid #334155; }
-    .project { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #334155; }
-    .project:last-child { border-bottom: none; }
-    .project h3 { color: #38bdf8; }
-    .project p { color: #cbd5e1; font-size: 0.9rem; }
-    footer { margin-top: 2rem; color: #64748b; font-size: 0.85rem; }
+
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #22d3ee;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background glow */
+    .glow {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.1) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn-nav {
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-nav:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    .hero-content { max-width: 900px; }
+    .hero .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      animation: pulse 3s infinite;
+    }
+
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; }
+    .hero h1 .gradient { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .hero p { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--muted); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.8; }
+
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4); }
+    .btn-outline {
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+      display: inline-block;
+      background: transparent;
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 3rem 1rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat .num { font-size: 2rem; font-weight: 800; color: var(--accent); display: block; }
+    .stat .label { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
+
+    /* Projects */
+    .section { padding: 5rem 1rem; }
+    .section-title { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 3rem; }
+    .section-title span { color: var(--primary); }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.2); }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+    .card:hover::before { transform: scaleX(1); }
+
+    .card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text); }
+    .card p { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6; }
+    .card .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .tag {
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .card-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .card-link:hover { text-decoration: underline; }
+
+    /* Contact */
+    .contact { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 4rem 2rem; max-width: 600px; margin: 0 auto; text-align: center; }
+    .contact h2 { font-size: 2rem; margin-bottom: 1rem; }
+    .contact p { color: var(--muted); margin-bottom: 2rem; }
+
+    .form-group { margin-bottom: 1.5rem; text-align: left; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+
+    /* Footer */
+    footer {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 0.8s ease forwards; }
+    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-outline { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Mis Proyectos</h1>
-    <p class="subtitle">Sitio estático desplegado en Render</p>
-  </header>
-  <div class="card">
-    <div class="project">
-      <h3>Portafolio Personal</h3>
-      <p>Mis proyectos de Ingeniería en Sistemas.</p>
+
+  <div class="glow"></div>
+
+  <nav>
+    <div class="logo">CNUÑEZ.</div>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="#contacto" class="btn-nav">Contratarme</a>
+  </nav>
+
+  <section class="hero fade-in" id="inicio">
+    <div class="hero-content">
+      <div class="badge">Ingeniería en Sistemas &middot; ITESO</div>
+      <h1>Construyo <span class="gradient">experiencias digitales</span> que impactan.</h1>
+      <p>Estudiante de Ingeniería en Sistemas apasionado por el desarrollo web, la arquitectura de software y crear soluciones que resuelvan problemas reales.</p>
+      <div class="hero-actions">
+        <a href="#proyectos" class="btn-primary">Ver Proyectos</a>
+        <a href="#contacto" class="btn-outline">Contacto</a>
+      </div>
     </div>
-    <div class="project">
-      <h3>App Web</h3>
-      <p>Aplicación con Express y Node.js.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><span class="num">3+</span><span class="label">Proyectos desplegados</span></div>
+    <div class="stat"><span class="num">100%</span><span class="label">Dedicación</span></div>
+    <div class="stat"><span class="num">2026</span><span class="label">Año de inicio</span></div>
+  </section>
+
+  <section class="section" id="proyectos">
+    <h2 class="section-title">Mis <span>Proyectos</span></h2>
+    <div class="projects-grid">
+      <div class="card">
+        <h3>Portafolio Web</h3>
+        <p>Sitio estático moderno y responsive desplegado en Render con HTML5 y CSS3 puro.</p>
+        <div class="tags">
+          <span class="tag">HTML5</span>
+          <span class="tag">CSS3</span>
+          <span class="tag">Render</span>
+        </div>
+        <a href="#" class="card-link">Ver demo <span>→</span></a>
+      </div>
+      <div class="card">
+        <h3>API REST con Express</h3>
+        <p>Servidor Node.js con Express para gestión de proyectos, con endpoints REST y middleware personalizado.</p>
+        <div class="tags">
+          <span class="tag">Node.js</span>
+          <span class="tag">Express</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <a href="#" class="card-link">Ver código <span>→</span></a>
+      </div>
+      <div class="card">
+        <h3>Dashboard de Ingeniería</h3>
+        <p>Panel de control para visualizar métricas de proyectos académicos con gráficos interactivos.</p>
+        <div class="tags">
+          <span class="tag">React</span>
+          <span class="tag">Chart.js</span>
+          <span class="tag">Tailwind</span>
+        </div>
+        <a href="#" class="card-link">Ver demo <span>→</span></a>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="section" id="contacto">
+    <div class="contact">
+      <h2>Hablemos</h2>
+      <p>¿Tienes un proyecto en mente? Vamos a construirlo juntos.</p>
+      <form>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label>Correo</label>
+          <input type="email" placeholder="tu@correo.com" required>
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea placeholder="Cuéntame sobre tu proyecto" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;">Enviar Mensaje</button>
+      </form>
+    </div>
+  </section>
+
   <footer>
-    &copy; 2026 Mis Proyectos - Hecho con <span style="color:#ef4444;">♥</span> en Render
+    <p>&copy; 2026 Cristian Núñez - Ingeniería en Sistemas, ITESO. Hecho con <span style="color:#ef4444;">♥</span> y desplegado en Render.</p>
   </footer>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      const original = btn.textContent;
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '¡Mensaje enviado!';
+        setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
+      }, 1200);
+    });
+  </script>
+
 </body>
 </html>
